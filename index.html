@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding:0;
+            box-sizing:border-box;
+        }
+        .main {
+            max-width:768px;
+            margin: 10px auto;
+            padding: 20px;
+        }
+        form {
+            width: 100%;
+            display: flex;
+            column-gap: 10px;
+        }
+        form div {
+            width: 33.3%;
+        }
+        form div input {
+            padding: 15px;
+            outline: none;
+            width: 100%;
+        }
+        form div button {
+            padding: 15px;
+            width:100%;
+            background-color: blue;
+            color: white;
+            border: none;
+        }
+        table {
+            width: 100%;
+            margin: 15px 0;
+            border-collapse: collapse;
+            text-align: center;
+            
+        }
+        table td,table th {
+            padding: 10px;
+            border: 1px solid black;
+        }
+        .btn-delete-td{
+            padding: 10px;
+            background-color: red;
+            color:white;
+            border: none;
+        }
+        .btn-save {
+            margin: 10px 0;
+            padding: 15px;
+            background-color: green;
+            border: none;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <main class="main">
+        <form action="">
+            <div>
+                <input type="text" name="name" id="name" placeholder="Username" required>
+            </div>
+            <div>
+                <input type="number" name="age" id="age" placeholder="Age" required>
+            </div>
+            <div>
+                <button type="submit">Tambah data</button>
+            </div>
+        </form>
+        <button type="button" class="btn-save">Save data</button>
+        <table>
+            <thead>
+                <tr>
+                    <th>No </th>
+                    <th>Nama </th>
+                    <th>Age </th>
+                    <th>Action </th>
+                </tr>
+
+            </thead>
+            <tbody>
+               
+            </tbody>
+        </table>
+    </main>
+    <script>
+        const inputName=document.getElementsByName("name")[0]
+        const inputAge=document.getElementsByName("age")[0];
+        const formSubmit=document.querySelector("form");
+        const tableBody=document.querySelector("table tbody")
+        const btnDeleteTd=document.querySelectorAll(".btn-delete-td");
+        const btnSave=document.querySelector(".btn-save")
+        let tmpData=[
+            {
+                id:0,
+                name:"Mail",
+                age:13
+            }
+        ]
+        let id=1
+        function createTableRow(key){
+            const tr=document.createElement("tr");
+            tr.setAttribute("data-id",key)
+            return tr;
+        }
+        function createTableData(value){
+            const td=document.createElement("td");
+            td.innerHTML=value
+            return td;
+        }
+        function createButtonDelete(id){
+         
+            return `<button type="button" data-id="${id}" onclick="removeTd(event)" class="btn-delete-td">Delete</button>`;
+
+        }
+
+        function renderData(){
+            const key=id++;
+          
+            let tr=createTableRow(key);
+     
+            let tdName=createTableData(inputName.value)
+            let tdAge=createTableData(inputAge.value)
+            let tdAction=createTableData(createButtonDelete(key))
+            
+            tr.appendChild(createTableData(key))
+            tr.appendChild(tdName);
+            tr.appendChild(tdAge)
+            tr.appendChild(tdAction)
+            tableBody.appendChild(tr);
+            let tmpObj={
+                id:key,
+                name:inputName.value,
+                age:inputAge.value
+            }
+            tmpData.push(tmpObj);
+        }
+
+        formSubmit.addEventListener("submit",function(event){
+            event.preventDefault();
+            renderData()
+            formSubmit.reset()
+
+        })
+       function removeTd(event){
+        let id=event.target.dataset.id;
+        let trRemove=document.querySelector(`table tbody tr[data-id="${id}"]`);
+
+         tableBody.removeChild(trRemove)
+         tmpData=tmpData.filter(e =>e.id!=id)
+         localStorage.setItem("todo-data",JSON.stringify(tmpData))
+
+       }
+      
+       btnSave.addEventListener("click",function(){
+          localStorage.setItem("todo-data",JSON.stringify(tmpData))
+       })
+       
+       window.addEventListener("load",function(){
+        if(localStorage.getItem("todo-data")){
+            tmpData=JSON.parse(localStorage.getItem("todo-data"))
+            for(const data of tmpData){
+                let fisrtTr=createTableRow(data.id);
+          fisrtTr.appendChild(createTableData(data.id))
+          fisrtTr.appendChild(createTableData(data.name))
+          fisrtTr.appendChild(createTableData(data.age))
+          fisrtTr.appendChild(createTableData(createButtonDelete(data.id)))
+          tableBody.appendChild(fisrtTr)
+            }
+        }
+        else {
+        let fisrtTr=createTableRow(tmpData[0].id);
+          fisrtTr.appendChild(createTableData(tmpData[0].id))
+          fisrtTr.appendChild(createTableData(tmpData[0].name))
+          fisrtTr.appendChild(createTableData(tmpData[0].age))
+          fisrtTr.appendChild(createTableData(createButtonDelete(tmpData[0].id)))
+          tableBody.appendChild(fisrtTr)
+        }
+          
+       })
+    </script>
+</body>
+</html>
