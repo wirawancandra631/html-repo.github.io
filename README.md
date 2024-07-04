@@ -1,7 +1,8 @@
+### Daftar Link
 
+|  Nama Website |     Link  |
+|  --------  | ------------  |
+| Todo list | [https://](https://wirawancandra631.github.io/html-repo.github.io/) |
 
-<ul>
-  <li>Todo app https://wirawancandra631.github.io/html-repo.github.io/</li>
-   <li>Todo app https://wirawancandra631.github.io/html-repo.github.io/product-list</li>
-   <li>Todo app https://wirawancandra631.github.io/html-repo.github.io/calculator</li>
-</ul>
+| Simple Kalkulator | [https://](https://wirawancandra631.github.io/html-repo.github.io/calculator.html) |
+| Product list | [https://](https://wirawancandra631.github.io/html-repo.github.io/product-list.html) |
